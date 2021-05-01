@@ -24,6 +24,9 @@ inputs:
     description: Operating system architecture
     required: true
     default: amd64
+  build_tool:
+    description: The build tool to use (i.e. colcon or catkin_make_isolated)
+    required: false
   underlay_repos:
     description: Names of package repositories to build and test in the underlay workspace
     required: false
@@ -49,6 +52,10 @@ runs:
       shell: bash
       run: |
         echo ::group::Generate job
+        build_tool_arg=""
+        if [[ "${{inputs.build_tool}}" != "" ]]; then
+          build_tool_arg="--build-tool ${{inputs.build_tool}}"
+        fi
         overlay_pkg_arg=""
         if [[ "${{inputs.overlay_pkg}}" != "" ]]; then
           overlay_pkg_arg="--pkg ${{inputs.overlay_pkg}}"
@@ -66,6 +73,7 @@ runs:
           ${{inputs.os_name}} ${{inputs.os_code_name}} ${{inputs.arch}} \
           ${{inputs.underlay_repos}} \
           ${overlay_pkg_arg} \
+          ${build_tool_arg} \
           --output-dir .
         echo ::endgroup::
 
