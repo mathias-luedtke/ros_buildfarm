@@ -202,10 +202,13 @@ if pull_request:
         '',
         'echo "# BEGIN SECTION: Run Dockerfile - build and install"',
     ] + ([
+        'echo CCACHE_DIR="${CCACHE_DIR:-$HOME/.ccache}"',
+        'ls -ld "${CCACHE_DIR:-$HOME/.ccache}"',
+        'ls -l "${CCACHE_DIR:-$HOME/.ccache}"',
         'if [ ! -d "${CCACHE_DIR:-$HOME/.ccache}" ]; then mkdir "${CCACHE_DIR:-$HOME/.ccache}"; fi',
     ]  if shared_ccache else []) + [
         ('if [ ! -c /dev/nvidia[0-9] ]; then echo "--require-gpu-support is enabled but can not detect nvidia support installed" && exit 1; fi' if require_gpu_support else ''),
-        'docker run' +
+        'docker -D run' +
         (' --env=DISPLAY=:0.0 --env=QT_X11_NO_MITSHM=1 --volume=/tmp/.X11-unix:/tmp/.X11-unix:rw --gpus all' if require_gpu_support else '') +
         ' --rm ' +
         ' --cidfile=$WORKSPACE/docker_build_and_install/docker.cid' +
@@ -236,9 +239,12 @@ if pull_request:
         'echo "# BEGIN SECTION: Run Dockerfile - build and test"',
         '',
     ] + ([
+        'echo CCACHE_DIR="${CCACHE_DIR:-$HOME/.ccache}"',
+        'ls -ld "${CCACHE_DIR:-$HOME/.ccache}"',
+        'ls -l "${CCACHE_DIR:-$HOME/.ccache}"',
         'if [ ! -d "${CCACHE_DIR:-$HOME/.ccache}" ]; then mkdir "${CCACHE_DIR:-$HOME/.ccache}"; fi',
     ] if shared_ccache else []) + [
-        'docker run' +
+        'docker -D run' +
         (' --env=DISPLAY=:0.0 --env=QT_X11_NO_MITSHM=1 --volume=/tmp/.X11-unix:/tmp/.X11-unix:rw  --gpus all' if require_gpu_support else '') +
         ' --rm ' +
         ' --cidfile=$WORKSPACE/docker_build_and_test/docker.cid' +
