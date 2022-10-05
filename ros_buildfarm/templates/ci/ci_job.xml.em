@@ -516,5 +516,11 @@ parameters = [
 @(SNIPPET(
     'build-wrapper_timestamper',
 ))@
+@[if git_ssh_credential_id]@
+@(SNIPPET(
+    'build-wrapper_ssh-agent',
+    credential_ids=[git_ssh_credential_id],
+))@
+@[end if]@
   </buildWrappers>
 </project>
