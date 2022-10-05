@@ -309,6 +309,8 @@ def _get_ci_job_config(
         'xunit_publisher_types': get_xunit_publisher_types_and_patterns(
             ros_version, os_name == 'ubuntu' and os_code_name != 'bionic'),
 
+        'git_ssh_credential_id': config.git_ssh_credential_id,
+
         'benchmark_patterns': build_file.benchmark_patterns,
         'benchmark_schema': build_file.benchmark_schema,
 
