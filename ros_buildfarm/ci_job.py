@@ -204,7 +204,7 @@ def configure_ci_job(
         rosdistro_name, os_name, os_code_name, arch, ci_build_name)
 
     job_config = _get_ci_job_config(
-        index, rosdistro_name, build_file, os_name,
+        index, config, rosdistro_name, build_file, os_name,
         os_code_name, arch,
         build_file.repos_files,
         build_file.repository_names,
@@ -230,7 +230,7 @@ def configure_ci_view(jenkins, view_name, dry_run=False):
 
 
 def _get_ci_job_config(
-        index, rosdistro_name, build_file, os_name,
+        index, config, rosdistro_name, build_file, os_name,
         os_code_name, arch,
         repos_files, repository_names, package_names, package_dependencies,
         underlay_source_jobs, underlay_source_paths, trigger_timer,
@@ -309,7 +309,7 @@ def _get_ci_job_config(
         'xunit_publisher_types': get_xunit_publisher_types_and_patterns(
             ros_version, os_name == 'ubuntu' and os_code_name != 'bionic'),
 
-        'git_ssh_credential_id': build_file.git_ssh_credential_id,
+        'git_ssh_credential_id': config.git_ssh_credential_id,
 
         'benchmark_patterns': build_file.benchmark_patterns,
         'benchmark_schema': build_file.benchmark_schema,
